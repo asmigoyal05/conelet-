@@ -35,13 +35,13 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Middleware to pass user data to all views
+
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
 });
 
-// --- PAGE RENDERING ROUTES ---
+
 app.get('/', (req, res) => { res.render('index'); });
 
 app.get('/products', async (req, res) => {
@@ -63,7 +63,7 @@ app.get('/cart', async (req, res) => {
     let subtotal = 0;
     cartItems.forEach(item => subtotal += item.price * item.quantity);
 
-    // Apply discount to cart page totals
+
     const discountPercentage = req.session.discount || 0;
     const discountAmount = subtotal * discountPercentage;
     const taxableSubtotal = subtotal - discountAmount;
@@ -85,8 +85,7 @@ app.get('/cart', async (req, res) => {
   }
 });
 
-// --- NEW: ORDER SUCCESS PAGE ROUTE ---
-// This handles the "Thank You" page after a successful order
+
 app.get('/order/success/:orderId', (req, res) => {
     res.render('order-success', {
         orderId: req.params.orderId,
@@ -95,9 +94,7 @@ app.get('/order/success/:orderId', (req, res) => {
 });
 
 
-// --- ACCOUNT ROUTES ---
 
-// Show the login/register page
 app.get('/login', (req, res) => {
     res.render('login', {
         error: req.session.error || null,
@@ -107,7 +104,7 @@ app.get('/login', (req, res) => {
     req.session.mode = null;
 });
 
-// Handle registration
+
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -130,7 +127,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Handle login
+
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -156,7 +153,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Handle logout
+
 app.get('/account/logout', (req, res) => {
     req.session.destroy(() => {
         res.redirect('/');
@@ -164,7 +161,6 @@ app.get('/account/logout', (req, res) => {
 });
 
 
-// --- API ROUTES ---
 
 app.get('/api/products', async (req, res) => {
   try {
@@ -183,7 +179,7 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// "Add to Cart"
+
 app.post('/api/cart/add', async (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({
@@ -211,7 +207,7 @@ app.post('/api/cart/add', async (req, res) => {
   }
 });
 
-// Cart Count
+
 app.get('/api/cart/count', async (req, res) => {
   if (!req.session.user) {
     return res.json({ success: true, count: 0 });
@@ -226,7 +222,6 @@ app.get('/api/cart/count', async (req, res) => {
   }
 });
 
-// Cart Update
 app.post('/api/cart/update/:itemId', async (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ success: false, error: 'Not logged in.' });
@@ -237,7 +232,7 @@ app.post('/api/cart/update/:itemId', async (req, res) => {
     const userId = req.session.user._id;
     const item = await CartItem.findOne({ _id: itemId, userId: userId });
 
-    // --- FIX 1: Was '4Z4' ---
+
     if (!item) return res.status(404).json({ success: false, error: 'Item not found' });
 
     if (action === 'increment') {
@@ -253,12 +248,12 @@ app.post('/api/cart/update/:itemId', async (req, res) => {
     await item.save();
     res.json({ success: true, reload: true });
   } catch (err) {
-    // --- FIX 2: Was '5Video (Async):' ---
+
     res.status(500).json({ success: false, error: 'Error updating quantity' });
   }
 });
 
-// Cart Remove
+
 app.delete('/api/cart/remove/:itemId', async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ success: false, error: 'Not logged in.' });
@@ -269,16 +264,16 @@ app.delete('/api/cart/remove/:itemId', async (req, res) => {
         await CartItem.findOneAndDelete({ _id: itemId, userId: userId });
         res.json({ success: true, reload: true });
     } catch (err) {
-        // --- FIX 3: Was '50od' ---
+
         res.status(500).json({ success: false, error: 'Error removing item' });
     }
 });
 
-// API Route: Apply Discount
+
 app.post('/api/cart/apply-discount', (req, res) => {
     const { code } = req.body;
     if (code && code.toUpperCase() === 'CONE10') {
-        req.session.discount = 0.10; // Store 10% discount
+        req.session.discount = 0.10; 
         req.session.discountCode = code.toUpperCase();
         res.json({ success: true, message: 'Discount applied!' });
     } else {
@@ -288,7 +283,7 @@ app.post('/api/cart/apply-discount', (req, res) => {
     }
 });
 
-// API Route: Place Order
+
 app.post('/api/order/place', async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ success: false, message: 'You must be logged in to place an order.' });
@@ -313,7 +308,7 @@ app.post('/api/order/place', async (req, res) => {
         const tax = taxableSubtotal * 0.1;
         const finalTotal = taxableSubtotal + tax;
 
-        // --- In a real app, process payment HERE ---
+  
 
         const orderData = {
             userId: userId,
@@ -333,25 +328,23 @@ app.post('/api/order/place', async (req, res) => {
             placedAt: new Date()
         };
 
-        // --- In a real app, save 'orderData' to an 'Order' collection ---
-        // const newOrder = new Order(orderData);
-        // await newOrder.save();
+    
         console.log("Order placed:", orderData);
 
-        // --- Delete cart items for THIS user ONLY ---
         await CartItem.deleteMany({ userId: userId });
         req.session.discount = null;
         req.session.discountCode = null;
 
-        res.json({ success: true, orderId: Date.now() }); // Using timestamp as a fake Order ID
+        res.json({ success: true, orderId: Date.now() }); 
 
     } catch (error) {
         console.error('Error placing order:', error);
-        // --- FIX 4: Was '5We' ---
+     
         res.status(500).json({ success: false, message: 'Server error while placing order.' });
     }
 });
 
 
-// --- Static Files ---
+
 app.use(express.static(path.join(__dirname, 'public')));
+
