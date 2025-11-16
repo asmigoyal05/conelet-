@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('products-interactive.js loaded!'); // Confirms file is loading
+    console.log('products-interactive.js loaded!'); 
 
-    // --- 1. Get elements ---
+
     const productGrid = document.querySelector('.product-grid');
     const searchInput = document.querySelector('.search-bar input');
     const allCheckboxes = document.querySelectorAll('.filter-list input[type="checkbox"]');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const keywordContainer = document.querySelector('#keyword-container');
     const cartCounter = document.querySelector('#cart-counter');
 
-    // --- 2. Main fetch function ---
+  
     async function fetchAndRenderProducts() {
         let queryParams = new URLSearchParams();
         const selectedCategories = [];
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 3. Render function ---
+ 
     function renderProducts(products) {
         productGrid.innerHTML = '';
         if (products.length === 0) {
@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
         products.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
-            // Set all data attributes on the card itself
             productCard.dataset.id = product._id;
             productCard.dataset.name = product.name;
             productCard.dataset.price = product.price;
@@ -72,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. Keyword function ---
     function updateKeywords() {
         keywordContainer.innerHTML = '';
         allCheckboxes.forEach(checkbox => {
@@ -89,14 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. Function to update the cart counter ---
     async function updateCartCounter() {
         try {
             const response = await fetch('/api/cart/count');
             const result = await response.json();
             if (result.success) {
                 cartCounter.textContent = result.count;
-                // Show/hide counter
+              
                 if (result.count > 0) {
                     cartCounter.style.display = 'flex';
                 } else {
@@ -108,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 6. Event listeners (for filters) ---
+
     allCheckboxes.forEach(checkbox => checkbox.addEventListener('change', fetchAndRenderProducts));
     priceSlider.addEventListener('input', () => { priceValue.textContent = `$0-${priceSlider.value}`; });
     priceSlider.addEventListener('change', fetchAndRenderProducts);
@@ -135,13 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 7. "Add to Cart" Listener (FIXED) ---
+  
     productGrid.addEventListener('click', async (event) => {
         if (event.target.classList.contains('btn-add-to-cart')) {
             const button = event.target;
-            const card = button.closest('.product-card'); // Get the parent card
+            const card = button.closest('.product-card'); 
 
-            const { id, name, price, image } = card.dataset; // Get data from the card
+            const { id, name, price, image } = card.dataset; 
 
             try {
                 const response = await fetch('/api/cart/add', {
@@ -155,19 +152,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (response.status === 401) {
-                    // --- THIS IS THE FIX ---
-                    // Not logged in. Server sent a 401 status.
-                    alert(result.message); // "You must be logged in..."
-                    window.location.href = result.redirect; // Redirect to /login
+                    
+                    alert(result.message); 
+                    window.location.href = result.redirect; 
 
                 } else if (response.ok) {
-                    // Success!
+             
                     button.textContent = 'Added!';
-                    updateCartCounter(); // Update the counter
+                    updateCartCounter(); 
                     setTimeout(() => { button.textContent = 'Add to Cart'; }, 2000);
 
                 } else {
-                    // Other server error (e.g., database error)
+                    
                     alert(result.error || 'Could not add item.');
                     button.textContent = 'Error';
                 }
@@ -178,8 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 8. Initial Page Setup ---
+
     updateKeywords();
-    updateCartCounter(); // Update counter on page load
-    fetchAndRenderProducts(); // Load initial products
+    updateCartCounter(); 
+    fetchAndRenderProducts(); 
 });
+
