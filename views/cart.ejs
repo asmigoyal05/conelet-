@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - CONELET</title>
+    <title>Checkout - CONÉLET</title>
     <link rel="stylesheet" href="/cart/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -15,12 +15,13 @@
 
         <main class="checkout-main">
             <div class="checkout-form-container">
-
+                
                 <div class="checkout-steps">
                     <div id="step-1" class="step active">Shipping <i class="fas fa-check-circle"></i></div>
                     <div id="step-2" class="step">Payment <i class="fas fa-check-circle"></i></div>
                 </div>
 
+                <!-- Step 1: Shipping Form (Now visible by default) -->
                 <div id="shipping-form" class="account-details-section">
                     <h3>Shipping details</h3>
                     <div class="form-group">
@@ -36,7 +37,8 @@
                         <input type="text" id="city" placeholder="Anytown" class="input-field">
                     </div>
                 </div>
-
+                
+                <!-- Step 2: Payment Form (Hidden) -->
                 <div id="payment-form" class="account-details-section" style="display: none;">
                     <h3>Payment details</h3>
                     <div class="form-group">
@@ -54,14 +56,15 @@
                     <a href="#" id="link-back-to-shipping" class="back-link" style="display: inline-block; margin-top: 15px;">&larr; Back to Shipping</a>
                 </div>
 
-
+                <!-- UPDATED: "Pay Now" button has been MOVED -->
                 <div class="checkout-buttons-bottom">
                     <button class="btn-secondary">Cancel order</button>
                     <button id="btn-to-payment" class="btn-primary">Continue to Payment</button>
-                    <button id="btn-pay" class="btn-primary" style="display: none;">Pay Now</button>
+                    <!-- The "Pay Now" button is no longer here -->
                 </div>
             </div>
 
+            <!-- ... Your Order Summary ... -->
             <div class="order-summary-container">
                 <h3>Order Summary</h3>
 
@@ -79,7 +82,10 @@
                                     <span class="quantity-value"><%= item.quantity %></span>
                                     <button class="btn-quantity" data-id="<%= item._id %>" data-action="increment">+</button>
                                 </div>
-                                <button class="btn-remove" data-id="<%= item._id %>">&times;</button>
+                                <!-- UPDATED: Changed remove button to a trash icon -->
+                                <button class="btn-remove" data-id="<%= item._id %>">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </div>
                         <% }) %>
                     <% } else { %>
@@ -113,11 +119,214 @@
                         <span>Total</span>
                         <span id="summary-total">$<%= total.toFixed(2) %></span>
                     </div>
+
+                    <!-- 
+                      UPDATED: "Pay Now" button is MOVED here.
+                      It's hidden by the script until the user gets to the payment step. 
+                    -->
+                    <button id="btn-pay" class="btn-primary btn-pay-now" style="display: none;">Pay Now</button>
                 </div>
             </div>
-            </main>
+            <!-- ... End of Order Summary ... -->
+
+        </main>
     </div>
 
-    <script src="/cart/checkout.js"></script>
+    <!-- 
+    ============================================================
+    JAVASCRIPT (Embedded)
+    ============================================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Checkout.js v5 (Embedded Final) Loaded');
+            
+            // --- PART 1: CART ITEM LISTENERS (Server-side) ---
+            const itemsContainer = document.querySelector('#order-items-container');
+            if (itemsContainer) {
+                itemsContainer.addEventListener('click', async (event) => {
+                    const target = event.target.closest('button'); // Find the button clicked
+                    if (!target) return;
+
+                    // Handle quantity buttons
+                    if (target.classList.contains('btn-quantity')) {
+                        const itemId = target.dataset.id;
+                        const action = target.dataset.action; 
+                        try {
+                            const response = await fetch(`/api/cart/update/${itemId}`, { 
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ action: action })
+                            });
+                            const result = await response.json();
+                            if (result.success) {
+                                window.location.reload(); 
+                            }
+                        } catch (err) {
+                            console.error('Error updating quantity:', err);
+                        }
+                    }
+                    // Handle remove buttons
+                    if (target.classList.contains('btn-remove')) {
+                        const itemId = target.dataset.id;
+                        if (!confirm('Remove this item from your cart?')) {
+                            return; 
+                        }
+                        try {
+                            const response = await fetch(`/api/cart/remove/${itemId}`, {
+                                method: 'DELETE' 
+                            });
+                            const result = await response.json();
+                            if (result.success) {
+                                window.location.reload(); 
+                            }
+                        } catch (err) {
+                            console.error('Error removing item:', err);
+                        }
+                    }
+                });
+            }
+
+            // --- PART 2: DISCOUNT BUTTON LISTENER ---
+            const applyButton = document.getElementById('btn-apply-discount');
+            const discountInput = document.getElementById('discount-code');
+
+            if (applyButton && discountInput) {
+                applyButton.addEventListener('click', async () => {
+                    const code = discountInput.value;
+                    if (!code) {
+                        alert('Please enter a discount code.');
+                        return;
+                    }
+                    try {
+                        const response = await fetch('/api/cart/apply-discount', { 
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            window.location.reload(); 
+                        } else {
+                            alert(result.message || 'Invalid discount code');
+                        }
+                    } catch (error) {
+                        console.error('Error applying discount:', error);
+                        alert('An error occurred applying the discount.');
+                    }
+                });
+            }
+
+            // --- PART 3 & 4: FORM NAVIGATION, FINAL PAY, and INIT ---
+            
+            const steps = {
+                shipping: document.getElementById('step-1'),
+                payment: document.getElementById('step-2')
+            };
+            
+            const forms = {
+                shipping: document.getElementById('shipping-form'),
+                payment: document.getElementById('payment-form')
+            };
+            
+            const buttons = {
+                toPayment: document.getElementById('btn-to-payment'),
+                pay: document.getElementById('btn-pay') // This ID is the same
+            };
+            
+            const backLinks = {
+                toShipping: document.getElementById('link-back-to-shipping')
+            };
+
+            function showStep(stepName) {
+                if (!forms.shipping || !forms.payment || !buttons.toPayment || !buttons.pay || !steps.shipping || !steps.payment) {
+                    console.error('Form navigation elements are missing from the page.');
+                    return;
+                }
+                
+                // Hide all forms and buttons
+                forms.shipping.style.display = 'none';
+                forms.payment.style.display = 'none';
+                buttons.toPayment.style.display = 'none';
+                buttons.pay.style.display = 'none'; // This now controls the button in the summary
+                
+                steps.shipping.classList.remove('active', 'completed');
+                steps.payment.classList.remove('active', 'completed');
+
+                if (stepName === 'shipping') {
+                    forms.shipping.style.display = 'block';
+                    buttons.toPayment.style.display = 'inline-block';
+                    steps.shipping.classList.add('active');
+                } else if (stepName === 'payment') {
+                    forms.payment.style.display = 'block';
+                    buttons.pay.style.display = 'block'; // Use 'block' for 100% width
+                    steps.payment.classList.add('active');
+                    steps.shipping.classList.add('completed');
+                }
+            }
+
+            // --- Attach Listeners for Navigation ---
+            if (buttons.toPayment) {
+                buttons.toPayment.addEventListener('click', () => showStep('payment'));
+            }
+            
+            if (backLinks.toShipping) {
+                backLinks.toShipping.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    showStep('shipping');
+                });
+            }
+            
+            // Final pay button logic
+            if (buttons.pay) {
+                buttons.pay.addEventListener('click', async () => {
+                    const shippingDetails = {
+                        name: document.getElementById('name').value,
+                        address: document.getElementById('address').value,
+                        city: document.getElementById('city').value
+                    };
+                    
+                    const paymentDetails = {
+                        cardNumber: document.getElementById('card-number').value,
+                        expiry: document.getElementById('card-expiry').value,
+                        cvc: document.getElementById('card-cvc').value
+                    };
+
+                    if (!shippingDetails.name || !shippingDetails.address || !paymentDetails.cardNumber) {
+                        alert('Please fill out all shipping and payment fields.');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch('/api/order/place', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                shipping: shippingDetails,
+                                payment: paymentDetails
+                            })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert('Order placed successfully!');
+                            window.location.href = `/order/success/${result.orderId}`;
+                        } else {
+                            alert(result.message || 'There was a problem placing your order.');
+                        }
+
+                    } catch (err) {
+                        console.error('Error placing order:', err);
+                        alert('A critical error occurred. Please try again.');
+                    }
+                });
+            }
+            
+            // --- INITIALIZATION ---
+            showStep('shipping');
+
+        });
+    </script>
 </body>
 </html>
