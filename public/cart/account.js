@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event listeners to switch forms
+ 
     if (tabLogin) tabLogin.addEventListener('click', () => switchForm('login'));
     if (tabRegister) tabRegister.addEventListener('click', () => switchForm('register'));
 
-    // Check URL query parameters to show the register form if redirected with an error
+
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('mode') === 'register') {
          switchForm('register');
