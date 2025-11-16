@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
-// This is the "Schema" - the blueprint for our data
-// It now 100% matches the JSON you provided
+
 const productSchema = new mongoose.Schema({
   id: {
     type: Number,
     required: true,
-    unique: true // Ensures we don't add the same ID twice
+    unique: true 
   },
   name: {
     type: String,
@@ -22,7 +21,7 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['parfait', 'cone', 'tub'], // Matches your categories
+    enum: ['parfait', 'cone', 'tub'],
     required: true
   },
   isFeatured: {
@@ -31,7 +30,8 @@ const productSchema = new mongoose.Schema({
   }
 });
 
-// Mongoose will create a collection called "products"
+
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = Product;
+
