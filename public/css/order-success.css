@@ -30,7 +30,7 @@ body {
 }
 
 .logo-span {
-    color: var(--primary-blue);
+    color: var(--main-bg);
 }
 
 .success-main {
@@ -157,3 +157,4 @@ body {
         transform: scale3d(1.1, 1.1, 1);
     }
 }
+
