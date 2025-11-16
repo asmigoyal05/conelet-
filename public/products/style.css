@@ -24,8 +24,7 @@ body {
     color: var(--text-color);
     padding: 1rem;
 
-    /* --- THIS IS THE FIX --- */
-    /* This one line locks the background image in place. */
+
     background-attachment: fixed;
 }
 
@@ -240,14 +239,14 @@ header {
 
 .toolbar-cart-wrapper {
   position: relative;
-  display: inline-block; /* To contain its children */
-  margin-right: 1rem; /* Adjust as needed for spacing */
+  display: inline-block; 
+  margin-right: 1rem;
 }
 
 
 .toolbar-cart-wrapper .cart-icon {
     width: 30px;
-    height: 30px; /* Ensure height matches width for square icon */
+    height: 30px;
     cursor: pointer;
 }
 
@@ -333,22 +332,22 @@ header {
 }
 
 .btn-add-to-cart {
-    background-color: var(--text-color); /* This is your black color */
-    color: var(--main-bg); /* This is your white color */
+    background-color: var(--text-color); 
+    color: var(--main-bg);
     border: none;
-    border-radius: 20px; /* This makes it "rounded" */
+    border-radius: 20px; 
     padding: 0.75rem 1.5rem;
     font-family: var(--font-family);
     font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
-    margin-top: 1rem; /* Adds space above the button */
+    margin-top: 1rem; 
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn-add-to-cart:hover {
-    background-color: #333; /* A slightly lighter black on hover */
-    transform: translateY(-2px); /* Lifts the button a bit */
+    background-color: #333; 
+    transform: translateY(-2px); 
 }
 
 .btn-add-to-cart:active {
@@ -358,10 +357,10 @@ header {
 
 #cart-counter {
   position: absolute;
-  top: -8px; /* Adjust this to move it up/down relative to .toolbar-cart-wrapper */
-  right: -8px; /* Adjust this to move it left/right relative to .toolbar-cart-wrapper */
+  top: -8px; 
+  right: -8px; 
 
-  background-color: #e53e3e; /* A strong red */
+  background-color: #e53e3e; 
   color: white;
   font-family: var(--font-family);
   font-weight: bold;
@@ -371,7 +370,7 @@ header {
   height: 20px;
   border-radius: 50%;
 
-  /* Center the number inside the circle */
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,16 +402,16 @@ header {
 
 
 .dropdown-content-menu {
-    display: none; /* Hidden by default */
+    display: none; 
     position: absolute;
     right: 0;
-    top: 100%; /* Position it right below the link */
+    top: 100%; 
     background-color: #ffffff;
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 8px;
-    overflow: hidden; /* To get rounded corners on items */
+    overflow: hidden; 
 }
 
 
@@ -420,9 +419,9 @@ header {
     display: block;
 }
 
-/* Style for the "Logout" link */
+
 .dropdown-item {
-    color: #333; /* Black text */
+    color: #333; 
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -431,6 +430,7 @@ header {
 }
 
 .dropdown-item:hover {
-    background-color: #f5f5f5; /* Light grey hover */
-    color: #333; /* Keep text black on hover */
+    background-color: #f5f5f5; 
+    color: #333; 
 }
+
