@@ -10,10 +10,15 @@
 
 body {
     font-family: var(--font-family);
-    background-image: url(order.png);
+    background-image: url(order.png); 
     color: var(--text-color);
     margin: 0;
     padding: 0;
+
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .minimal-header {
@@ -157,4 +162,5 @@ body {
         transform: scale3d(1.1, 1.1, 1);
     }
 }
+
 
