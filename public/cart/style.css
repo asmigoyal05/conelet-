@@ -23,7 +23,8 @@
 
 body {
     font-family: var(--font-family);
-    background-color: var(--bg-color); /* This is the fix for the main background */
+    background-image: url("order.png");
+    background-position: center;
     color: var(--text-color);
     padding: 1rem;
 }
@@ -583,3 +584,4 @@ header {
     font-size: 1.1rem;
     box-shadow: 0 4px 15px rgba(63, 125, 225, 0.3);
 }
+
