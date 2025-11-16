@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Checkout.js v4 (Full Nav & Submit) Loaded');
 
-    // --- PART 1: CART ITEM LISTENERS (Server-side) ---
-    // This part talks to your server and reloads the page.
+    
 
     const itemsContainer = document.querySelector('#order-items-container');
     if (itemsContainer) {
@@ -13,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const itemId = target.dataset.id;
                 const action = target.dataset.action;
                 try {
-                    // CORRECT PATH: /api/cart/update...
+                 
                     const response = await fetch(`/api/cart/update/${itemId}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 try {
-                    // CORRECT PATH: /api/cart/remove...
+                   
                     const response = await fetch(`/api/cart/remove/${itemId}`, {
                         method: 'DELETE'
                     });
@@ -49,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- PART 2: DISCOUNT BUTTON LISTENER (Server-side) ---
+ 
 
     const applyButton = document.getElementById('btn-apply-discount');
     const discountInput = document.getElementById('discount-code');
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             try {
-                // CORRECT PATH: /api/cart/apply-discount
+               
                 const response = await fetch('/api/cart/apply-discount', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -81,8 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- PART 3: FORM NAVIGATION / STEPPER (FIXED) ---
-    // This logic is client-side and is now complete.
 
     const steps = {
         shipping: document.getElementById('step-1'),
@@ -103,28 +100,25 @@ document.addEventListener('DOMContentLoaded', () => {
         toShipping: document.getElementById('link-back-to-shipping')
     };
 
-    /**
-     * A central function to control which step is visible.
-     * @param {'shipping' | 'payment'} stepName The step to show.
-     */
+
     function showStep(stepName) {
-        // Ensure elements exist before trying to modify them
+   
         if (!forms.shipping || !forms.payment || !buttons.toPayment || !buttons.pay || !steps.shipping || !steps.payment) {
             console.error('Form navigation elements are missing from the page.');
             return;
         }
 
-        // Hide all forms and buttons
+      
         forms.shipping.style.display = 'none';
         forms.payment.style.display = 'none';
         buttons.toPayment.style.display = 'none';
         buttons.pay.style.display = 'none';
 
-        // Deactivate all steps
+    
         steps.shipping.classList.remove('active', 'completed');
         steps.payment.classList.remove('active', 'completed');
 
-        // Show the correct form, button, and step
+  
         if (stepName === 'shipping') {
             forms.shipping.style.display = 'block';
             buttons.toPayment.style.display = 'inline-block';
@@ -133,28 +127,27 @@ document.addEventListener('DOMContentLoaded', () => {
             forms.payment.style.display = 'block';
             buttons.pay.style.display = 'inline-block';
             steps.payment.classList.add('active');
-            steps.shipping.classList.add('completed'); // Mark previous step as completed
+            steps.shipping.classList.add('completed'); 
         }
     }
 
-    // --- Attach Listeners for Navigation ---
+   
     if (buttons.toPayment) {
         buttons.toPayment.addEventListener('click', () => showStep('payment'));
     }
 
     if (backLinks.toShipping) {
         backLinks.toShipping.addEventListener('click', (e) => {
-            e.preventDefault(); // Stop the link from jumping
+            e.preventDefault(); 
             showStep('shipping');
         });
     }
 
-    // --- PART 4: PLACE ORDER BUTTON (NEW) ---
-    // This logic sends all the form data to your server
+ 
 
     if (buttons.pay) {
         buttons.pay.addEventListener('click', async () => {
-            // 1. Collect all the form data
+           
             const shippingDetails = {
                 name: document.getElementById('name').value,
                 address: document.getElementById('address').value,
@@ -167,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 cvc: document.getElementById('card-cvc').value
             };
 
-            // Basic validation
+  
             if (!shippingDetails.name || !shippingDetails.address || !paymentDetails.cardNumber) {
                 alert('Please fill out all shipping and payment fields.');
                 return;
@@ -176,8 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Submitting order...');
 
             try {
-                // 2. Send all data to your server
-                // CORRECT PATH: /api/order/place
+                
                 const response = await fetch('/api/order/place', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -190,9 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (result.success) {
-                    // 3. Redirect to a "Thank You" page
+                   
                     alert('Order placed successfully!');
-                    // You must create this success page/route
+                  
                     window.location.href = `/order/success/${result.orderId}`;
                 } else {
                     alert(result.message || 'There was a problem placing your order.');
@@ -205,8 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- INITIALIZATION ---
-    // Start on the 'shipping' step by default
+ 
     showStep('shipping');
 
 });
+
