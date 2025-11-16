@@ -22,10 +22,9 @@ const cartItemSchema = new mongoose.Schema({
         required: true,
         default: 1
     },
-    // --- ADD THIS FIELD ---
-    // This connects the cart item to a specific user
+  
     userId: {
-        type: String, // Or mongoose.Schema.Types.ObjectId if you use a real User model
+        type: String, 
         required: true
     }
 });
@@ -33,3 +32,4 @@ const cartItemSchema = new mongoose.Schema({
 const CartItem = mongoose.model('CartItem', cartItemSchema);
 
 module.exports = CartItem;
+
