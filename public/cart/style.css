@@ -23,8 +23,7 @@
 
 body {
     font-family: var(--font-family);
-    background-image: url("order.png");
-    background-position: center;
+    background-color: var(--bg-color); /* This is the fix for the main background */
     color: var(--text-color);
     padding: 1rem;
 }
@@ -85,7 +84,7 @@ header {
 
 .dropdown {
     position: relative;
-    display: inline-block;
+    z-index: 1000; 
 }
 
 .account-link {
@@ -102,12 +101,130 @@ header {
     font-size: 0.8rem;
 }
 
+.dropdown-content-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--main-bg);
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.dropdown:hover .dropdown-content-menu {
+    display: block;
+}
+
+.dropdown-item {
+    color: var(--text-color);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--input-bg);
+    color: var(--text-color); 
+}
+
 .bag-icon {
     width: 25px;
     height: 25px;
 }
 /* ==============================================
   END OF HEADER CSS
+ ==============================================
+*/
+
+/* ==============================================
+  ACCOUNT PAGE CSS
+ ==============================================
+*/
+.account-page-body {
+    background-image: none; 
+    background-color: var(--bg-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.account-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+}
+
+.account-card {
+    background: var(--main-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.account-card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--primary-blue);
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.tab {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 10px 0;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--light-text);
+    transition: color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+    color: var(--primary-blue);
+    border-bottom: 3px solid var(--primary-blue);
+}
+
+.form-section {
+    padding-top: 1rem;
+    text-align: left; 
+}
+
+.form-section .btn-primary {
+    width: 100%;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 10px rgba(63, 125, 225, 0.3); 
+}
+
+.error-message {
+    color: #f44336;
+    background-color: #ffebee;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    border: 1px solid #f44336;
+    text-align: left;
+}
+/* ==============================================
+  END OF ACCOUNT PAGE CSS
  ==============================================
 */
 
@@ -148,7 +265,7 @@ header {
     padding-top: 2rem;
 }
 
-/* --- UPDATED: Simplified step connector line --- */
+/* --- Step connector line logic --- */
 .checkout-steps .step::before {
     content: '';
     position: absolute;
@@ -180,19 +297,15 @@ header {
     color: var(--primary-blue);
 }
 
-/* --- UPDATED: Logic to color the line blue --- */
 .checkout-steps .step.active::before {
     background-color: var(--primary-blue);
 }
-/* This connects the first active step to the start */
 .checkout-steps .step.active:first-child::before {
     background: linear-gradient(to right, white 50%, var(--primary-blue) 50%);
 }
-/* This connects a completed step to the next active one */
 .checkout-steps .step.completed + .step.active::before {
      background: linear-gradient(to right, var(--primary-blue) 50%, var(--primary-blue) 50%);
 }
-/* This marks a step as completed */
 .checkout-steps .step.completed {
     color: var(--primary-blue);
 }
@@ -243,7 +356,6 @@ header {
     font-size: 1.1rem;
 }
 
-/* --- NEW: Style for the new input fields --- */
 .input-field {
     width: 100%;
     padding: 0.8rem 1rem;
@@ -259,7 +371,6 @@ header {
     color: var(--primary-blue);
     font-weight: 500;
 }
-/* --- End of New Styles --- */
 
 
 .form-actions-top {
@@ -314,9 +425,17 @@ header {
     border-top: 1px solid var(--border-color);
 }
 
+/* ==============================================
+  NEW/UPDATED STYLES FOR CART
+==============================================
+*/
+
 .order-summary-container {
     background-color: var(--main-bg);
-    padding-left: 2rem;
+    padding: 2rem;
+    /* NEW: Make it look like a card */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 .order-summary-container h3 {
     font-size: 1.2rem;
@@ -376,14 +495,20 @@ header {
     font-size: 1rem;
 }
 
-/* NEW: Style for the remove button */
+/* UPDATED: Remove button style */
 .btn-remove {
     background-color: transparent;
     border: none;
-    font-size: 1.5rem;
+    font-size: 0.9rem; /* Make icon smaller */
     color: var(--light-text);
     cursor: pointer;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    transition: color 0.2s ease;
+}
+/* This allows clicking the icon inside the button */
+.btn-remove i {
+    pointer-events: none;
 }
 .btn-remove:hover {
     color: #f44336; /* Red on hover */
@@ -395,6 +520,7 @@ header {
     gap: 0.5rem;
     margin-bottom: 2rem;
 }
+/* NEW: Make discount input match other inputs */
 .gift-discount input {
     flex-grow: 1;
     padding: 0.8rem 1rem;
@@ -448,61 +574,11 @@ header {
     margin-top: 1.5rem;
 }
 
-/* ==============================================
-  ADD THESE STYLES to the end of your style.css
-==============================================
-*/
-
-/* Styles for the "Hello, Name" dropdown */
-.dropdown {
-    position: relative;
-    z-index: 1000;
-}
-
-.account-link {
-    text-decoration: none;
-    color: var(--text-color);
-    font-weight: 500;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.account-link i {
-    font-size: 0.8rem;
-}
-
-/* This is the new dropdown menu */
-.dropdown-content-menu {
-    display: none; /* Hidden by default */
-    position: absolute;
-    right: 0;
-    top: 100%; /* Position it right below the link */
-    background-color: #ffffff;
-    min-width: 160px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    z-index: 1;
-    border-radius: 8px;
-    overflow: hidden; /* To get rounded corners on items */
-}
-
-/* Show the menu when hovering over the .dropdown container */
-.dropdown:hover .dropdown-content-menu {
-    display: block;
-}
-
-/* Style for the "Logout" link */
-.dropdown-item {
-    color: #333; /* Black text */
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.dropdown-item:hover {
-    background-color: #f5f5f5; /* Light grey hover */
-    color: #333; /* Keep text black on hover */
+/* NEW: Style for the relocated "Pay Now" button */
+.btn-pay-now {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem 2rem; /* Make it a bit larger */
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(63, 125, 225, 0.3);
 }
