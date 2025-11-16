@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account - CONÉLET</title>
-    <!-- We use a new, dedicated CSS file for this page -->
+  
     <link rel="stylesheet" href="/css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
         <div class="login-card">
             <h2>C<span class="logo-span">O</span>NÉLET</h2>
 
-            <!-- This EJS block will show errors from the server -->
+           
             <% if (typeof error !== 'undefined' && error) { %>
                 <p class="error-message"><%= error %></p>
             <% } %>
@@ -23,7 +23,7 @@
                 <button id="tab-register" class="tab">Register</button>
             </div>
 
-            <!-- Login Form -->
+      
             <form id="form-login" action="/login" method="POST" class="form-section">
                 <div class="form-group">
                     <label for="login-email">Email</label>
@@ -36,7 +36,7 @@
                 <button type="submit" class="btn-primary">Login</button>
             </form>
 
-            <!-- Register Form (Hidden) -->
+         
             <form id="form-register" action="/register" method="POST" class="form-section" style="display: none;">
                 <div class="form-group">
                     <label for="register-name">Full Name</label>
@@ -54,7 +54,8 @@
             </form>
         </div>
     </div>
-    <!-- We link to a new, dedicated JS file for the tabs -->
+ 
     <script src="/js/login.js"></script>
 </body>
 </html>
+
