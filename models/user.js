@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true, // No two users can have the same email
+        unique: true, 
         lowercase: true
     },
     password: {
@@ -16,10 +16,11 @@ const userSchema = new mongoose.Schema({
         required: true
     }
 }, {
-    timestamps: true // Adds 'createdAt' and 'updatedAt'
+    timestamps: true
 });
 
-// Mongoose will create a collection called "users"
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
+
