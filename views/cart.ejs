@@ -56,11 +56,10 @@
                     <a href="#" id="link-back-to-shipping" class="back-link" style="display: inline-block; margin-top: 15px;">&larr; Back to Shipping</a>
                 </div>
 
-                <!-- UPDATED: "Pay Now" button has been MOVED -->
+                
                 <div class="checkout-buttons-bottom">
-                    <button class="btn-secondary">Cancel order</button>
+                    <!-- REMOVED: "Cancel order" button -->
                     <button id="btn-to-payment" class="btn-primary">Continue to Payment</button>
-                    <!-- The "Pay Now" button is no longer here -->
                 </div>
             </div>
 
@@ -82,7 +81,6 @@
                                     <span class="quantity-value"><%= item.quantity %></span>
                                     <button class="btn-quantity" data-id="<%= item._id %>" data-action="increment">+</button>
                                 </div>
-                                <!-- UPDATED: Changed remove button to a trash icon -->
                                 <button class="btn-remove" data-id="<%= item._id %>">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -120,10 +118,6 @@
                         <span id="summary-total">$<%= total.toFixed(2) %></span>
                     </div>
 
-                    <!-- 
-                      UPDATED: "Pay Now" button is MOVED here.
-                      It's hidden by the script until the user gets to the payment step. 
-                    -->
                     <button id="btn-pay" class="btn-primary btn-pay-now" style="display: none;">Pay Now</button>
                 </div>
             </div>
