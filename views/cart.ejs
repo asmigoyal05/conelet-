@@ -21,7 +21,7 @@
                     <div id="step-2" class="step">Payment <i class="fas fa-check-circle"></i></div>
                 </div>
 
-                <!-- Step 1: Shipping Form (Now visible by default) -->
+              
                 <div id="shipping-form" class="account-details-section">
                     <h3>Shipping details</h3>
                     <div class="form-group">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 
-                <!-- Step 2: Payment Form (Hidden) -->
+              
                 <div id="payment-form" class="account-details-section" style="display: none;">
                     <h3>Payment details</h3>
                     <div class="form-group">
@@ -58,12 +58,12 @@
 
                 
                 <div class="checkout-buttons-bottom">
-                    <!-- REMOVED: "Cancel order" button -->
+                   
                     <button id="btn-to-payment" class="btn-primary">Continue to Payment</button>
                 </div>
             </div>
 
-            <!-- ... Your Order Summary ... -->
+        
             <div class="order-summary-container">
                 <h3>Order Summary</h3>
 
@@ -121,28 +121,24 @@
                     <button id="btn-pay" class="btn-primary btn-pay-now" style="display: none;">Pay Now</button>
                 </div>
             </div>
-            <!-- ... End of Order Summary ... -->
+          
 
         </main>
     </div>
 
-    <!-- 
-    ============================================================
-    JAVASCRIPT (Embedded)
-    ============================================================
-    -->
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Checkout.js v5 (Embedded Final) Loaded');
             
-            // --- PART 1: CART ITEM LISTENERS (Server-side) ---
+          
             const itemsContainer = document.querySelector('#order-items-container');
             if (itemsContainer) {
                 itemsContainer.addEventListener('click', async (event) => {
-                    const target = event.target.closest('button'); // Find the button clicked
+                    const target = event.target.closest('button'); 
                     if (!target) return;
 
-                    // Handle quantity buttons
+                   
                     if (target.classList.contains('btn-quantity')) {
                         const itemId = target.dataset.id;
                         const action = target.dataset.action; 
@@ -160,7 +156,7 @@
                             console.error('Error updating quantity:', err);
                         }
                     }
-                    // Handle remove buttons
+                
                     if (target.classList.contains('btn-remove')) {
                         const itemId = target.dataset.id;
                         if (!confirm('Remove this item from your cart?')) {
@@ -181,7 +177,7 @@
                 });
             }
 
-            // --- PART 2: DISCOUNT BUTTON LISTENER ---
+          
             const applyButton = document.getElementById('btn-apply-discount');
             const discountInput = document.getElementById('discount-code');
 
@@ -211,7 +207,7 @@
                 });
             }
 
-            // --- PART 3 & 4: FORM NAVIGATION, FINAL PAY, and INIT ---
+        
             
             const steps = {
                 shipping: document.getElementById('step-1'),
@@ -238,11 +234,10 @@
                     return;
                 }
                 
-                // Hide all forms and buttons
                 forms.shipping.style.display = 'none';
                 forms.payment.style.display = 'none';
                 buttons.toPayment.style.display = 'none';
-                buttons.pay.style.display = 'none'; // This now controls the button in the summary
+                buttons.pay.style.display = 'none'; 
                 
                 steps.shipping.classList.remove('active', 'completed');
                 steps.payment.classList.remove('active', 'completed');
@@ -253,13 +248,13 @@
                     steps.shipping.classList.add('active');
                 } else if (stepName === 'payment') {
                     forms.payment.style.display = 'block';
-                    buttons.pay.style.display = 'block'; // Use 'block' for 100% width
+                    buttons.pay.style.display = 'block'; 
                     steps.payment.classList.add('active');
                     steps.shipping.classList.add('completed');
                 }
             }
 
-            // --- Attach Listeners for Navigation ---
+          
             if (buttons.toPayment) {
                 buttons.toPayment.addEventListener('click', () => showStep('payment'));
             }
@@ -271,7 +266,7 @@
                 });
             }
             
-            // Final pay button logic
+        
             if (buttons.pay) {
                 buttons.pay.addEventListener('click', async () => {
                     const shippingDetails = {
@@ -317,10 +312,11 @@
                 });
             }
             
-            // --- INITIALIZATION ---
+         
             showStep('shipping');
 
         });
     </script>
 </body>
 </html>
+
