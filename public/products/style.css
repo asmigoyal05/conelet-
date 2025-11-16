@@ -20,20 +20,19 @@ body {
     font-family: var(--font-family);
     background-image: url(images/SHOP.png);
     background-position: center;
-    background-size:cover ;
+    background-size: cover;
     color: var(--text-color);
     padding: 1rem;
+
+    /* --- THIS IS THE FIX --- */
+    /* This one line locks the background image in place. */
+    background-attachment: fixed;
 }
 
 .page-container {
     max-width: 1600px;
     margin: 0 auto;
 }
-
-/* ==============================================
-  HEADER CSS
-  ==============================================
-*/
 
 .white{
   color: white;
@@ -107,10 +106,6 @@ header {
     width: 25px;
     height: 25px;
 }
-/* ==============================================
-  END OF HEADER CSS
-  ==============================================
-*/
 
 
 .content-wrapper {
@@ -242,16 +237,14 @@ header {
     gap: 0.5rem;
 }
 
-/* NEW: Wrapper for the cart icon in the toolbar.
-  This makes it a positioning context for the counter.
-*/
+
 .toolbar-cart-wrapper {
   position: relative;
   display: inline-block; /* To contain its children */
   margin-right: 1rem; /* Adjust as needed for spacing */
 }
 
-/* Your original cart-icon style, now specifically for the toolbar */
+
 .toolbar-cart-wrapper .cart-icon {
     width: 30px;
     height: 30px; /* Ensure height matches width for square icon */
@@ -362,12 +355,6 @@ header {
     transform: translateY(0);
 }
 
-/* ==============================================
-  UPDATED CART COUNTER STYLES
-  ==============================================
-*/
-/* Removed: .cart-link-wrapper */
-/* Removed: .cart-icon-header */
 
 #cart-counter {
   position: absolute;
@@ -392,12 +379,9 @@ header {
 
 }
 
-/* ==============================================
-  ADD THESE STYLES to the end of your style.css
-==============================================
-*/
 
-/* Styles for the "Hello, Name" dropdown */
+
+
 .dropdown {
     position: relative;
     z-index: 1000;
@@ -417,7 +401,7 @@ header {
     font-size: 0.8rem;
 }
 
-/* This is the new dropdown menu */
+
 .dropdown-content-menu {
     display: none; /* Hidden by default */
     position: absolute;
@@ -431,7 +415,7 @@ header {
     overflow: hidden; /* To get rounded corners on items */
 }
 
-/* Show the menu when hovering over the .dropdown container */
+
 .dropdown:hover .dropdown-content-menu {
     display: block;
 }
