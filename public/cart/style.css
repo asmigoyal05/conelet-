@@ -23,8 +23,7 @@
 
 body {
     font-family: var(--font-family);
-    background-image: url("order.png");
-    background-position: center;
+    background-color: var(--bg-color); /* This is the fix for the main background */
     color: var(--text-color);
     padding: 1rem;
 }
@@ -418,9 +417,10 @@ header {
     background-color: #d0d0d0;
 }
 
+/* UPDATED: This now aligns the single button to the right */
 .checkout-buttons-bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; /* Changed from space-between */
     margin-top: auto;
     padding-top: 2rem;
     border-top: 1px solid var(--border-color);
@@ -583,4 +583,3 @@ header {
     font-size: 1.1rem;
     box-shadow: 0 4px 15px rgba(63, 125, 225, 0.3);
 }
-
