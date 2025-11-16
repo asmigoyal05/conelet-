@@ -34,10 +34,7 @@ body {
     margin: 0 auto;
 }
 
-/* ==============================================
-  HEADER CSS
- ==============================================
-*/
+
 header {
     display: flex;
     justify-content: space-between;
@@ -135,15 +132,7 @@ header {
     width: 25px;
     height: 25px;
 }
-/* ==============================================
-  END OF HEADER CSS
- ==============================================
-*/
 
-/* ==============================================
-  ACCOUNT PAGE CSS
- ==============================================
-*/
 .account-page-body {
     background-image: none; 
     background-color: var(--bg-color);
@@ -224,10 +213,7 @@ header {
     border: 1px solid #f44336;
     text-align: left;
 }
-/* ==============================================
-  END OF ACCOUNT PAGE CSS
- ==============================================
-*/
+
 
 .checkout-main {
     display: grid;
@@ -266,7 +252,7 @@ header {
     padding-top: 2rem;
 }
 
-/* --- Step connector line logic --- */
+
 .checkout-steps .step::before {
     content: '';
     position: absolute;
@@ -418,24 +404,21 @@ header {
     background-color: #d0d0d0;
 }
 
-/* UPDATED: This now aligns the single button to the right */
+
 .checkout-buttons-bottom {
     display: flex;
-    justify-content: flex-end; /* Changed from space-between */
+    justify-content: flex-end; 
     margin-top: auto;
     padding-top: 2rem;
     border-top: 1px solid var(--border-color);
 }
 
-/* ==============================================
-  NEW/UPDATED STYLES FOR CART
-==============================================
-*/
+
 
 .order-summary-container {
     background-color: var(--main-bg);
     padding: 2rem;
-    /* NEW: Make it look like a card */
+ 
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
@@ -497,23 +480,23 @@ header {
     font-size: 1rem;
 }
 
-/* UPDATED: Remove button style */
+
 .btn-remove {
     background-color: transparent;
     border: none;
-    font-size: 0.9rem; /* Make icon smaller */
+    font-size: 0.9rem;
     color: var(--light-text);
     cursor: pointer;
     padding: 0.5rem;
     margin-left: 0.5rem;
     transition: color 0.2s ease;
 }
-/* This allows clicking the icon inside the button */
+
 .btn-remove i {
     pointer-events: none;
 }
 .btn-remove:hover {
-    color: #f44336; /* Red on hover */
+    color: #f44336; 
 }
 
 
@@ -522,7 +505,7 @@ header {
     gap: 0.5rem;
     margin-bottom: 2rem;
 }
-/* NEW: Make discount input match other inputs */
+
 .gift-discount input {
     flex-grow: 1;
     padding: 0.8rem 1rem;
@@ -576,12 +559,13 @@ header {
     margin-top: 1.5rem;
 }
 
-/* NEW: Style for the relocated "Pay Now" button */
+
 .btn-pay-now {
     width: 100%;
     margin-top: 1.5rem;
-    padding: 1rem 2rem; /* Make it a bit larger */
+    padding: 1rem 2rem; 
     font-size: 1.1rem;
     box-shadow: 0 4px 15px rgba(63, 125, 225, 0.3);
 }
+
 
